@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style type="text/css">
+    .steps-container {
+        list-style: none;
+        padding: 0;
+    }
+
+        .steps-container li {
+            opacity: 0;
+            font-family:Algerian;
+            font-size : 18px;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+</style>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        let steps = document.querySelectorAll(".steps-container li");
+
+        steps.forEach((step, index) => {
+            setTimeout(() => {
+                step.style.opacity = "1";
+                step.style.transform = "translateY(0)";
+            }, index * 600); // Décalage de 300ms entre chaque élément
+        });
+    });
+</script>
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div>
+        <h2 class="display-4 text-center">PatPilot vous accompagne</h2>
+        <ul class="steps-container pt-4">
+            <li>Définissez vos gâteaux (Description/Prix par part)</li>
+            <li>Partagez votre URL de prise de contact</li>
+            <li>Gérez vos commandes (prospects, validées, payées)</li>
+            <li>Envoyez des mails</li>
+            <li>Faites des statistiques</li>
+        </ul>
+    </div>
+</div>

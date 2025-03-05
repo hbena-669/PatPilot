@@ -1,0 +1,168 @@
+﻿@model IEnumerable<Gateau>
+
+<style>
+    .gateau-card {
+        border: 2px solid #ff69b4; /* Bordure rose */
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        background: white;
+    }
+
+        .gateau-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+    .gateau-image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .gateau-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-bottom: 2px solid #ff69b4;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .badge {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+
+    .btn-outline-warning {
+        border-radius: 50px;
+        font-weight: bold;
+        padding: 8px 12px;
+    }
+
+    .btn-ajout-gateau {
+        border-radius: 50px;
+        font-weight: bold;
+        padding: 10px 15px;
+        width: 80%;
+        font-size: 1rem;
+        display: flex;
+        align-content:center;
+        /* align-items: center; */
+        gap: 8px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn-ajout-gateau i {
+            font-size: 1.2rem;
+        }
+
+        .btn-ajout-gateau:hover {
+            transform: scale(1.0);
+            background-color: #ff69b4 !important;
+            color: white !important;
+            border-color: #ff69b4 !important;
+        }
+    /* .gateau-card {
+        border: 2px solid pink;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .gateau-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .gateau-card .card-body {
+            padding: 15px;
+        } */
+</style>
+
+<!-- Bouton Ajouter Gâteau -->
+<button class="btn d-flex justify-content-center align-items-center btn-outline-danger btn-ajout-gateau" data-bs-toggle="modal" data-bs-target="#gateauModal" onclick="openModal(null)">
+    <i class="bi bi-plus-circle"></i> Ajouter un gâteau
+</button>
+
+
+<!-- Modal -->
+<div class="modal fade" id="gateauModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Ajouter / Modifier un Gâteau</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="gateauForm" asp-action="SaveGateau" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="gateauId" name="Id" />
+                    <input type="hidden" id="enseigneId" name="EnseigneId" value="@Context.Session.GetString("EnseigneId")" />
+                    <div class="mb-3">
+                        <label for="gateauName" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="gateauName" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gateauPrice" class="form-label">Prix</label>
+                        <input type="number" class="form-control" id="gateauPrice" name="Price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gateauDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="gateauDescription" name="Description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gateauImage" class="form-label">Image</label>
+                        <input type="file" class="form-control" id="gateauImage" name="ImageFile" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var gateau in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card gateau-card">
+                    <div class="gateau-image-container">
+                        <img src="@gateau.Image" class="card-img-top" alt="@gateau.Name">
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold text-dark">@gateau.Name</h5>
+                        <p class="card-text text-muted">@gateau.Description</p>
+                        <p class="card-text">
+                            <span class="badge bg-danger fs-6">@gateau.Price € / part</span>
+                        </p>
+                        <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#gateauModal"
+                                onclick="openModal('@gateau.Id', '@gateau.Name', '@gateau.Price', '@gateau.Description', '@gateau.Image')">
+                            <i class="bi bi-pencil-square"></i> Modifier
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<script>
+    function openModal(id, name, price, description, image) {
+        document.getElementById("gateauId").value = id || "";
+        document.getElementById("gateauName").value = name || "";
+        document.getElementById("gateauPrice").value = price || "";
+        document.getElementById("gateauDescription").value = description || "";
+        document.getElementById("gateauImage").value = image || "";
+    }
+</script>

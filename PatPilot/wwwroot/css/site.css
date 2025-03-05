@@ -1,0 +1,277 @@
+
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 10px;
+}
+
+main {
+    flex: 1; /* Permet au contenu de prendre toute la hauteur */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar {
+    width: 200px;
+    position: fixed;
+    top: 55px;
+    left: 0;
+    height: 100%;
+    background: #343a40;
+    padding-top: 0px;
+}
+
+    .sidebar a {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 14px;
+        color: white;
+        display: block;
+    }
+
+        .sidebar a:hover {
+            background: #495057;
+        }
+
+.content {
+    flex: 1; /* Prend tout l'espace restant */
+    margin-left: 200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.hmenu{
+    height:45px;
+}
+@media (max-width: 768px) {
+    html {
+        font-size: 12px;
+    }
+
+
+    @media (max-width: 768px) {
+        .sidebar {
+            left: -200px; /* Cachée par défaut */
+            transition: left 0.3s ease-in-out;
+        }
+
+            .sidebar.show {
+                left: 0; /* Affichée quand "show" est activé */
+            }
+    }
+
+    .content {
+        margin-left: 0; /* Empêcher le contenu d'être décalé à gauche */
+        border-radius: 10px;
+    }
+}
+
+.navbar-gradient {
+    background: linear-gradient(90deg, #343a40, #495057);
+}
+
+.sidebar img {
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+body {
+    background: url('/img/back3.jpg') no-repeat center center fixed;
+    background-size: cover; /* Ajuste l'image pour qu'elle couvre toute la page */
+}
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.05); /* Ajuste l'opacité ici */
+        z-index: -1;
+    }
+
+/* Arrière-plan par défaut (utilisateur non connecté) */
+.bg-default {
+    background-color: #f8f9fa;
+}
+
+/* Arrière-plan pour Admin */
+.bg-admin {
+    background: #ced4da;
+    color: white;
+}
+
+/* Arrière-plan pour AdminEnseigne */
+.bg-admin-enseigne {
+    background: white;
+    color: white;
+}
+
+/* Arrière-plan pour les utilisateurs normaux */
+.bg-user {
+    background: linear-gradient(to right, #4facfe, #ff6ec4);
+    color: white;
+}
+
+
+/* ======= Styles de la page de connexion ======= */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    /*background: linear-gradient(135deg, #667eea, #764ba2);*/
+    background-color : white;
+}
+
+.login-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 1rem;
+    font-size: 18px;
+    color: #333;
+}
+
+.login-box .form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.login-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+    .login-box button:hover {
+        background: #5a67d8;
+    }
+
+/* Lien "Mot de passe oublié" */
+.login-box .forgot-password {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #667eea;
+    text-decoration: none;
+}
+
+    .login-box .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-box {
+        width: 50%;
+    }
+}
+
+.btn-pink {
+    background-color: white; /* Rose Bootstrap */
+    color: black;
+    border: solid;
+    border-width: 1px;
+    border-color: #e83e8c;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px; /* Ajuste l'espace interne */
+}
+
+.btn-pink:hover {
+    background-color: #d63384; /* Teinte plus foncée au survol */
+    color: white;
+}
+
+.btn-danger {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+/* Conteneur principal */
+.enseigne-form-container {
+    background-color: #f8f9fa; /* Fond gris clair */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Titre */
+.enseigne-form-title {
+    text-align: center;
+    color: #343a40;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Ligne du formulaire */
+.enseigne-form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Labels */
+.enseigne-form-group label {
+    width: 30%; /* Largeur fixe pour les labels */
+    font-weight: 600;
+    color: #495057;
+    margin-right: 10px; /* Espacement avec le champ */
+    text-align: left;
+}
+
+/* Champs de saisie */
+.enseigne-form-group input,
+.enseigne-form-group select,
+.enseigne-form-group textarea {
+    width: 70%; /* Prend le reste de la ligne */
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 8px;
+}
+
+/* Boutons */
+.enseigne-form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.enseigne-form-buttons .btn {
+    width: 48%;
+}
+
+

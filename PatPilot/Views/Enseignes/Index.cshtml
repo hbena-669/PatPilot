@@ -1,0 +1,84 @@
+﻿@model IEnumerable<PatPilot.Models.Enseigne>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Enseignes</h1>
+
+<p>
+    <a asp-action="Create">Nouvelle Enseigne</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateActivation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateActivation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="text-warning d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-pencil-square fs-4"></i>
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?');">
+                            <i class="bi bi-trash fs-4"></i>
+                        </a>
+                    </div>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
