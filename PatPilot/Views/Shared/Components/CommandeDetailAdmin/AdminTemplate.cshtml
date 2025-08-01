@@ -1,0 +1,148 @@
+﻿@model PatPilot.Models.Commande
+@using PatPilot.Extensions
+@using PatPilot.Models
+@using PatPilot.Models.DTO
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    .thumbnail-container {
+        position: relative;
+        display: inline-block;
+    }
+
+        .thumbnail-container .zoom-img {
+            position: absolute;
+            top: -10px;
+            left: 100%;
+            width: 200px;
+            height: auto;
+            border: 1px solid #ccc;
+            display: none;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            background-color: white;
+        }
+
+        .thumbnail-container:hover .zoom-img {
+            display: block;
+        }
+
+    .main-img {
+        width: 50px;
+        height: auto;
+    }
+
+</style>
+
+<div class="container justify-content-center animate__animated animate__zoomIn mt-4 border-2">
+
+    <a asp-controller="Orders" asp-action="Orders" class="btn btn-outline-secondary mb-3">
+        ← Retour aux Commandes
+    </a>
+    <!-- Bloc Informations -->
+    <form asp-controller="Orders" asp-action="UpdateCommande" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <div class="card shadow mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-receipt-cutoff me-2"></i> Informations Commande
+                </h5>
+            </div>
+            <div class="card-body row">
+                <!-- Colonne Infos Générales -->
+                <div class="col-md-6">
+                    @* <p><strong><i class="bi bi-hash me-1"></i>Commande :</strong> @Model.Id</p> *@
+                    <p>
+                        <strong><i class="bi bi-calendar-event me-1"></i> Commandée le :</strong>
+                        @Model.DateCommande.ToShortDateString()
+                    </p>
+                    <p>
+                        <strong><i class="bi bi-truck me-1"></i> Livraison prévue :</strong>
+                        <input type="date" class="form-control form-control-sm w-75 d-inline"
+                               value="@Model.DateLivraison.ToString("yyyy-MM-dd")" />
+                    </p>
+                    <p>
+                        <strong><i class="bi bi-cash-coin me-1"></i> Total :</strong>
+                        @Model.Total €
+                    </p>
+                    <p>
+                        <strong><i class="bi bi-info-circle me-1"></i> Statut :</strong>
+                        <select class="form-select form-select-sm w-50 d-inline">
+                            @foreach (StatutCommande statut in Enum.GetValues(typeof(StatutCommande)))
+                            {
+                                <option value="@statut" selected="@(statut == Model.Statut ? "selected" : null)">
+                                    @statut.ToFriendlyString()
+                                </option>
+                            }
+                        </select>
+                    </p>
+                </div>
+
+                <!-- Colonne Infos Client -->
+                <div class="col-md-6 border-start">
+                    <p>
+                        <strong><i class="bi bi-person-fill me-1"></i> Client :</strong>
+                        @Model.Client.Nom
+                    </p>
+                    <p>
+                        <strong><i class="bi bi-envelope-fill me-1"></i> Email :</strong>
+                        @Model.Client.Email
+                    </p>
+                    <p>
+                        <strong><i class="bi bi-telephone-fill me-1"></i> Téléphone :</strong>
+                        @Model.Client.Telephone
+                    </p>
+                    <p>
+                        <strong><i class="bi bi-geo-alt-fill me-1"></i> Adresse :</strong>
+                        @Model.Client.Adresse
+                    </p>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <!-- Bloc Détails Produits -->
+    <div class="card shadow">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-receipt-cutoff me-2"></i> Informations Commande
+            </h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Image</th>
+                        <th>Produit</th>
+                        <th><i class="bi bi-currency-euro"></i> Prix unitaire</th>
+                        <th><i class="bi bi-hash"></i> Quantité</th>
+                        <th><i class="bi bi-calculator"></i> Sous-total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.commandeDetails)
+                    {
+                        <tr>
+                            <td>
+                                <div class="thumbnail-container position-relative">
+                                    <img src="@Url.Content("~/" + detail.Gateau.Image)" class="img-thumbnail main-img" />
+                                    <img src="@Url.Content("~/" + detail.Gateau.Image)" class="zoom-img" />
+                                </div>
+                            </td>
+                            <td>@detail.Gateau.Name</td>
+                            <td>@detail.PrixUnitaire.ToString("0.00") €</td>
+                            <td>@detail.Quantite</td>
+                            <td>@((detail.Quantite * detail.PrixUnitaire).ToString("0.00")) €</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

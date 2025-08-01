@@ -12,6 +12,7 @@
   </PropertyGroup>	
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="MailKit" Version="4.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.24" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.24" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
@@ -23,13 +24,14 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.18" />
+    <PackageReference Include="QuestPDF" Version="2025.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Areas\Identity\Pages\Client\" />
     <Folder Include="Compenents\" />
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Views\Commandes\" />
   </ItemGroup>
 
 </Project>

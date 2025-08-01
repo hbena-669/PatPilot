@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PatPilot.Data;
 using PatPilot.Models;
+using PatPilot.Models.DTO;
 
 namespace PatPilot.Repositories
 {
@@ -20,6 +21,12 @@ namespace PatPilot.Repositories
                                          .ToListAsync();
         }
 
+        public async Task<IEnumerable<Gateau>> GetAllByEnseigneAndTypeAsync(Guid enseigneId, GateauxType t)
+        {
+            return await _context.Gateaux.Include(g => g.Enseigne)
+                                         .Where(g => g.EnseigneId == enseigneId && g.GateauxType == t)
+                                         .ToListAsync();
+        }
         public async Task<Gateau> GetByIdAsync(Guid id)
         {
             return await _context.Gateaux.Include(g => g.Enseigne)

@@ -1,0 +1,26 @@
+﻿@model PatPilot.Models.Enseigne
+
+@functions {
+    string getLogo()
+    {
+        var logoPath = $"~/img/{Model.logo}";
+        return Url.Content(logoPath);
+    }
+}
+
+@if (Model != null)
+{
+    <div class="header-enseigne d-flex align-items-center px-3 position-relative bg-dark">
+        <!-- Conteneur du logo -->
+        <div class="logo-container position-relative me-3">
+            <img src="@getLogo()" alt="Logo" class="logo-debordant" />
+        </div>
+
+        <!-- Infos Enseigne -->
+        <div class="text-white">
+            <h5 class="mb-0">@Model.Name</h5>
+            <small>📞@Model.PhoneNumber</small><br />
+            <small>✉️@Model.Email</small>
+        </div>
+    </div>
+}

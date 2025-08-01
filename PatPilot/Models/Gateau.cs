@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MimeKit.Cryptography;
+using PatPilot.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,8 +27,16 @@ namespace PatPilot.Models
         // Relation avec les ingrédients
         public ICollection<Ingredient> Ingredients { get; set; }
 
+        public GateauxType GateauxType { get; set; }
+        public string? CommandeDesc { get; set; }
+        public string? ImageModel { get; set; }
         // Relation avec Enseigne
         public Guid EnseigneId { get; set; } 
         public Enseigne Enseigne { get; set; }
+        public Guid? EventID { get; set; }
+        public Evenement? Evenement { get; set; }
+
     }
+
+    
 }

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Evenement>
+@{
+    ViewData["Title"] = "Gestion des Évènements";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Gestion des Évènements</h2>
+
+    <button class="btn btn-outline-danger mb-4" data-bs-toggle="modal" data-bs-target="#evenementModal" onclick="openModal(null)">
+        <i class="bi bi-plus-circle"></i> Ajouter un évènement
+    </button>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var ev in Model)
+        {
+            <div class="col">
+                <div class="card h-100 border-0 shadow-lg hover-shadow col_radius text-center">
+                    <div class="mt-3">
+                        @if (!string.IsNullOrEmpty(ev.Icone))
+                        {
+                            if (ev.Icone.StartsWith("img/"))
+                            {
+                                <img src="/@ev.Icone" class="img-fluid" style="max-height: 150px;" alt="@ev.Nom" />
+                            }
+                            else
+                            {
+                                <i class="@ev.Icone fs-1 text-primary"></i>
+                            }
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@ev.Nom</h5>
+                        <button class="btn btn-sm btn-outline-warning mt-2" data-bs-toggle="modal" data-bs-target="#evenementModal"
+                                onclick="openModal('@ev.Id', '@ev.Nom', '@ev.Icone')">
+                            <i class="bi bi-pencil-square"></i> Modifier
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="evenementModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="SaveEvenement" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Ajouter / Modifier un Évènement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="evenementId" name="id" />
+                    <div class="mb-3">
+                        <label for="evenementNom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="evenementNom" name="nom" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="evenementIcone" class="form-label">Icône (classe Bootstrap ou chemin image)</label>
+                        <input type="text" class="form-control" id="evenementIcone" name="icone" placeholder="ex: bi-heart-fill ou img/evenements/mariage.png" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openModal(id, nom, icone) {
+            document.getElementById("evenementId").value = id || "";
+            document.getElementById("evenementNom").value = nom || "";
+            document.getElementById("evenementIcone").value = icone || "";
+        }
+    </script>
+}

@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+@{
+    ViewData["Title"] = "Votre commande";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-success text-center">
+        <h4 class="alert-heading">✅ Merci pour votre commande !</h4>
+        <p>@TempData["Confirmation"]</p>
+        <hr />
+        @await Component.InvokeAsync("CommandeDetails", new { commandeId = Model })
+        <hr />
+        <a href="@Url.Action("Index", "Commandes", new { id = ViewBag.EnseigneId })" class="btn btn-primary">← Retour aux gâteaux</a>
+    </div>
+</div>
+

@@ -2,6 +2,8 @@
 
 <style>
     .gateau-card {
+        width: 300px;
+        height: 350px;
         border: 2px solid #ff69b4; /* Bordure rose */
         border-radius: 15px;
         overflow: hidden;
@@ -52,7 +54,7 @@
         border-radius: 50px;
         font-weight: bold;
         padding: 10px 15px;
-        width: 80%;
+        width: 100%;
         font-size: 1rem;
         display: flex;
         align-content:center;
@@ -123,6 +125,7 @@
                         <label for="gateauImage" class="form-label">Image</label>
                         <input type="file" class="form-control" id="gateauImage" name="ImageFile" accept="image/*">
                     </div>
+                    <div id="imagePreviewContainer" class="text-center"></div>
                     <button type="submit" class="btn btn-success">Enregistrer</button>
                 </form>
             </div>
@@ -134,23 +137,25 @@
     <div class="row">
         @foreach (var gateau in Model)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card gateau-card">
-                    <div class="gateau-image-container">
-                        <img src="@gateau.Image" class="card-img-top" alt="@gateau.Name">
+            <div class="col-md-4 mb-4 d-flex justify-content-center">
+                
+                    <div class="card gateau-card">
+                        <div class="gateau-image-container">
+                            <img src="@gateau.Image" class="card-img-top" alt="@gateau.Name">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-dark">@gateau.Name</h5>
+                            <p class="card-text text-muted">@gateau.Description</p>
+                            <p class="card-text">
+                                <span class="badge bg-danger fs-6">@gateau.Price € / part</span>
+                            </p>
+                            <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#gateauModal"
+                                onclick="openModal('@gateau.Id', '@gateau.Name', '@gateau.Price.ToString(System.Globalization.CultureInfo.InvariantCulture)', '@gateau.Description', '@gateau.Image.Replace("\\", "/")')">
+                                <i class="bi bi-pencil-square"></i> Modifier
+                            </button>
+                        </div>
                     </div>
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold text-dark">@gateau.Name</h5>
-                        <p class="card-text text-muted">@gateau.Description</p>
-                        <p class="card-text">
-                            <span class="badge bg-danger fs-6">@gateau.Price € / part</span>
-                        </p>
-                        <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#gateauModal"
-                                onclick="openModal('@gateau.Id', '@gateau.Name', '@gateau.Price', '@gateau.Description', '@gateau.Image')">
-                            <i class="bi bi-pencil-square"></i> Modifier
-                        </button>
-                    </div>
-                </div>
+                
             </div>
 
         }
@@ -158,11 +163,43 @@
 </div>
 
 <script>
+
     function openModal(id, name, price, description, image) {
+        alert(price);
         document.getElementById("gateauId").value = id || "";
         document.getElementById("gateauName").value = name || "";
         document.getElementById("gateauPrice").value = price || "";
         document.getElementById("gateauDescription").value = description || "";
-        document.getElementById("gateauImage").value = image || "";
+
+        // Ne pas toucher au champ file
+        document.getElementById("gateauImage").value = null;
+
+        // Optionnel : afficher l’image actuelle si elle existe
+        if (image) {
+            let previewHtml = `<img src="${image}" class="img-fluid mt-2" style="max-height: 200px;" />`;
+            //alert(previewHtml);
+            document.getElementById("imagePreviewContainer").innerHTML = previewHtml;
+        } else {
+            document.getElementById("imagePreviewContainer").innerHTML = "";
+        }
+
+        // Écouteur pour changement d'image
+        document.getElementById("gateauImage").addEventListener("change", function () {
+            const file = this.files[0];
+            const previewContainer = document.getElementById("imagePreviewContainer");
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" class="img-fluid mt-2" style="max-height: 200px;" />`;
+                };
+
+                reader.readAsDataURL(file); // Charge l’image en Base64
+            } else {
+                // Aucun fichier sélectionné : on vide la prévisualisation
+                previewContainer.innerHTML = "";
+            }
+        });
     }
 </script>

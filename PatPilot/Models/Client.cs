@@ -9,6 +9,8 @@
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        public string UserId { get; set; }
+
         [Required]
         public Guid EnseigneId { get; set; }  // Lien avec l'enseigne
 
@@ -33,6 +35,9 @@
         // Relation avec l'enseigne
         [ForeignKey("EnseigneId")]
         public Enseigne Enseigne { get; set; }
+        public List<Commande> Commandes { get; set; } = new List<Commande>();
     }
+
+
 
 }

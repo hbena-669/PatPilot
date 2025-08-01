@@ -1,0 +1,21 @@
+﻿.header-enseigne {
+    /*background-color: #343a40;*/ /* bg-dark */
+    color: white;
+    height: 70px;
+    overflow: visible;
+}
+
+.logo-container {
+    width: 90px;
+    height: 70px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.logo-debordant {
+    height: 90px;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    z-index: 1;
+}

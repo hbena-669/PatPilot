@@ -4,26 +4,38 @@
     ViewData["Title"] = "Mon compte";
 }
 
-@* <h1>@ViewData["Title"]</h1> *@
+@* @section Scripts {
+    <script>
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const target = urlParams.get('target');
+            if (target === 'client') {
+                $('.login-box').addClass('client-style'); // Ajoute une classe spécifique
+                $('h2').text("Connexion Client"); // Changer le titre
+                // Tu peux changer le logo, les couleurs, etc.
+            }
+        });
+    </script>
+} *@
 
-<div class="login-container">
-    <div class="login-box">
-        <h2>Connexion</h2>
 
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Input.UserName">Utilisateur</label>
-                <input asp-for="Input.UserName" class="form-control" required />
-            </div>
+<div class="login-box animate__animated animate__zoomIn">
+    <h2>Connexion</h2>
 
-            <div class="form-group">
-                <label asp-for="Input.Password">Mot de passe</label>
-                <input asp-for="Input.Password" type="password" class="form-control" required />
-            </div>
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="Input.UserName">Utilisateur</label>
+            <input asp-for="Input.UserName" class="form-control" required />
+        </div>
 
-            <button type="submit">Se connecter</button>
+        <div class="form-group">
+            <label asp-for="Input.Password">Mot de passe</label>
+            <input asp-for="Input.Password" type="password" class="form-control" required />
+        </div>
 
-            <a asp-page="./ForgotPassword" class="forgot-password">Mot de passe oublié ?</a>
-        </form>
-    </div>
+        <button type="submit">Se connecter</button>
+
+        <a asp-page="./ForgotPassword" class="forgot-password">Mot de passe oublié ?</a>
+    </form>
 </div>
+

@@ -10,6 +10,8 @@ namespace PatPilot.Models
         public Guid? EnseigneId { get; set; }
 
         public Enseigne? Enseigne { get; set; }
+
+        public string? Adresse { get; set; }
     }
 
 }

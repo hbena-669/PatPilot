@@ -1,5 +1,6 @@
 ﻿namespace PatPilot.Models
 {
+    using Microsoft.EntityFrameworkCore;
     using PatPilot.Models.DTO;
     using System;
     using System.Collections.Generic;
@@ -21,8 +22,14 @@
         public DateTime DateCommande { get; set; } = DateTime.UtcNow;
 
         [Required]
+        public DateTime DateLivraison { get; set; } 
+
+        public string Commentaire { get; set; }
+        [Required]
         public StatutCommande Statut { get; set; } = StatutCommande.EnAttente;  // Statut (En attente, Validée, Payée)
 
+        [Precision(18, 2)] // Définit la précision (18 chiffres, 2 après la virgule)
+        [DataType(DataType.Currency)]
         public decimal Total { get; set; }  // Prix total
 
         // Relations
@@ -32,7 +39,7 @@
         [ForeignKey("EnseigneId")]
         public Enseigne Enseigne { get; set; }
 
-        public List<Gateau> Gateaux { get; set; } = new List<Gateau>();
+        public List<CommandeDetail> commandeDetails { get; set; } = new List<CommandeDetail>();
     }
 
 }

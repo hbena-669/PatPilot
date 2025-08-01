@@ -1,9 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using PatPilot.Extensions
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
+@inject IHttpContextAccessor HttpContextAccessor
+@functions {
+    bool isConnected()
+    {
+        if (User == null) return false;
+        if (SignInManager.IsSignedIn(User) &&
+            UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "Admin").Result) return true;
+        else if (SignInManager.IsSignedIn(User) &&
+            UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "AdminEnseigne").Result &&
+            HttpContextAccessor.HttpContext.Session.GetObjectFromJson<Enseigne>("Enseigne") != null) return true;
+        else return false;
+    }
+}
 <ul class="navbar-nav m-1">
-@if (SignInManager.IsSignedIn(User))
+    @if (isConnected())
 {
     <li class="nav-item">
             <div class="d-flex align-content-between">

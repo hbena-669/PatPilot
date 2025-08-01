@@ -29,7 +29,7 @@ namespace PatPilot.Controllers
             }
             
 
-            var gateaux = await _gateauRepository.GetAllByEnseigneAsync(ensid);
+            var gateaux = await _gateauRepository.GetAllByEnseigneAndTypeAsync(ensid, GateauxType.Normal);
             return View(gateaux);
         }
 
@@ -40,6 +40,10 @@ namespace PatPilot.Controllers
             ModelState.Remove("Enseigne");
             ModelState.Remove("Id");
             ModelState.Remove("Image");
+
+            ModelState.Remove("ImageModel");
+            ModelState.Remove("CommandeDesc");
+            ModelState.Remove("GateauxType");
 
             if (ModelState.IsValid)
             {
@@ -53,8 +57,9 @@ namespace PatPilot.Controllers
                     {
                         Directory.CreateDirectory(uploadPath);
                     }
+                    var gateauId = gateau.Id == Guid.Empty? Guid.NewGuid() : gateau.Id;
 
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    string fileName = gateauId.ToString() + Path.GetExtension(ImageFile.FileName);
                     string filePath = Path.Combine(uploadPath, fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))

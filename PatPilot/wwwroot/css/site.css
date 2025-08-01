@@ -1,4 +1,3 @@
-
 html {
     position: relative;
     min-height: 100%;
@@ -6,79 +5,28 @@ html {
 }
 
 main {
-    flex: 1; /* Permet au contenu de prendre toute la hauteur */
+    flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: center; /* centre horizontalement */
+    justify-content: flex-start; /* aligne en haut */
+    padding-top: 50px; /* espace en haut */
 }
 
-.sidebar {
-    width: 200px;
-    position: fixed;
-    top: 55px;
-    left: 0;
+.hmenu {
+    height: 45px;
+}
+
+html, body {
     height: 100%;
-    background: #343a40;
-    padding-top: 0px;
-}
-
-    .sidebar a {
-        padding: 10px 15px;
-        text-decoration: none;
-        font-size: 14px;
-        color: white;
-        display: block;
-    }
-
-        .sidebar a:hover {
-            background: #495057;
-        }
-
-.content {
-    flex: 1; /* Prend tout l'espace restant */
-    margin-left: 200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-.hmenu{
-    height:45px;
-}
-@media (max-width: 768px) {
-    html {
-        font-size: 12px;
-    }
-
-
-    @media (max-width: 768px) {
-        .sidebar {
-            left: -200px; /* Cachée par défaut */
-            transition: left 0.3s ease-in-out;
-        }
-
-            .sidebar.show {
-                left: 0; /* Affichée quand "show" est activé */
-            }
-    }
-
-    .content {
-        margin-left: 0; /* Empêcher le contenu d'être décalé à gauche */
-        border-radius: 10px;
-    }
-}
-
-.navbar-gradient {
-    background: linear-gradient(90deg, #343a40, #495057);
-}
-
-.sidebar img {
-    width: 100%;
-    height: auto;
     margin: 0;
+    padding: 0;
 }
 
 body {
-    background: url('/img/back3.jpg') no-repeat center center fixed;
-    background-size: cover; /* Ajuste l'image pour qu'elle couvre toute la page */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
     body::before {
@@ -88,42 +36,77 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(255, 255, 255, 0.05); /* Ajuste l'opacité ici */
+        background: rgba(255, 255, 255, 0.05);
         z-index: -1;
     }
 
-/* Arrière-plan par défaut (utilisateur non connecté) */
+.navbar-gradient {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.navbar-brand img {
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    color: white;
+    font-weight: bold;
+}
+
+.logo-fixed {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    width: 180px;
+    z-index: 10000;
+}
+
+.logo-grand {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Background classes */
 .bg-default {
     background-color: #f8f9fa;
 }
 
-/* Arrière-plan pour Admin */
 .bg-admin {
     background: #ced4da;
     color: white;
 }
 
-/* Arrière-plan pour AdminEnseigne */
 .bg-admin-enseigne {
     background: white;
     color: white;
 }
 
-/* Arrière-plan pour les utilisateurs normaux */
 .bg-user {
     background: linear-gradient(to right, #4facfe, #ff6ec4);
     color: white;
 }
 
-
-/* ======= Styles de la page de connexion ======= */
+/* Login page styles */
 .login-container {
-    display: flex;
+    /*display: flex;*/
     justify-content: center;
     align-items: center;
-    height: 80vh;
-    /*background: linear-gradient(135deg, #667eea, #764ba2);*/
-    background-color : white;
+    max-width: 400px;
+    background-color: white;
 }
 
 .login-box {
@@ -131,87 +114,169 @@ body {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    width: 80%;
+    width: 100%;
     max-width: 400px;
     text-align: center;
 }
 
-.login-box h2 {
-    margin-bottom: 1rem;
-    font-size: 18px;
-    color: #333;
-}
-
-.login-box .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
-}
-
-.login-box label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.login-box input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.login-box button {
-    width: 100%;
-    padding: 10px;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-    .login-box button:hover {
-        background: #5a67d8;
+    .login-box h2 {
+        margin-bottom: 1rem;
+        font-size: 18px;
+        color: #333;
     }
 
-/* Lien "Mot de passe oublié" */
-.login-box .forgot-password {
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #667eea;
-    text-decoration: none;
-}
-
-    .login-box .forgot-password:hover {
-        text-decoration: underline;
+    .login-box .form-group {
+        margin-bottom: 1rem;
+        text-align: left;
     }
 
-/* Responsive */
+    .login-box label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .login-box input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .login-box button {
+        width: 100%;
+        padding: 10px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .login-box button:hover {
+            background: #5a67d8;
+        }
+
+    .login-box .forgot-password {
+        display: block;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #667eea;
+        text-decoration: none;
+    }
+
+        .login-box .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+/* Responsive login box */
 @media (max-width: 480px) {
     .login-box {
         width: 50%;
     }
 }
 
-.btn-pink {
-    background-color: white; /* Rose Bootstrap */
-    color: black;
-    border: solid;
-    border-width: 1px;
-    border-color: #e83e8c;
-    display: flex;
-    align-items: center;
-    padding: 8px 16px; /* Ajuste l'espace interne */
+.login-boxc {
+    background: #fef6f9; /* rose pastel */
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    transition: transform 0.3s ease;
 }
 
-.btn-pink:hover {
-    background-color: #d63384; /* Teinte plus foncée au survol */
-    color: white;
+    .login-boxc:hover {
+        transform: scale(1.01);
+    }
+
+    .login-boxc h2 {
+        margin-bottom: 1.5rem;
+        font-size: 22px;
+        color: #444;
+        font-weight: bold;
+    }
+
+    .login-boxc .form-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .login-boxc label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 6px;
+        color: #555;
+    }
+
+    .login-boxc input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-size: 16px;
+        background-color: #fff;
+        transition: border 0.3s ease;
+    }
+
+        .login-boxc input:focus {
+            border-color: #ff9fcf;
+            outline: none;
+        }
+
+    .login-boxc button {
+        width: 100%;
+        padding: 12px;
+        background: #ff9fcf; /* rose clair */
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .login-boxc button:hover {
+            background: #ff82bd;
+        }
+
+    .login-boxc .forgot-password {
+        display: block;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #ff9fcf;
+        text-decoration: none;
+    }
+
+        .login-boxc .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+/* Responsive login box */
+@media (max-width: 480px) {
+    .login-boxc {
+        width: 90%;
+    }
 }
+
+/* Custom buttons */
+.btn-pink {
+    background-color: white;
+    color: black;
+    border: solid 1px #e83e8c;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+    .btn-pink:hover {
+        background-color: #d63384;
+        color: white;
+    }
 
 .btn-danger {
     display: flex;
@@ -219,17 +284,17 @@ body {
     padding: 8px 16px;
 }
 
-/* Conteneur principal */
+/* Formulaire Enseigne */
 .enseigne-form-container {
-    background-color: #f8f9fa; /* Fond gris clair */
+    background-color: #f8f9fa;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     margin: auto;
+    width: 100%;
 }
 
-/* Titre */
 .enseigne-form-title {
     text-align: center;
     color: #343a40;
@@ -237,41 +302,94 @@ body {
     margin-bottom: 20px;
 }
 
-/* Ligne du formulaire */
 .enseigne-form-group {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
 }
 
-/* Labels */
-.enseigne-form-group label {
-    width: 30%; /* Largeur fixe pour les labels */
-    font-weight: 600;
-    color: #495057;
-    margin-right: 10px; /* Espacement avec le champ */
-    text-align: left;
-}
+    .enseigne-form-group label {
+        width: 30%;
+        font-weight: 600;
+        color: #495057;
+        margin-right: 10px;
+        text-align: left;
+    }
 
-/* Champs de saisie */
-.enseigne-form-group input,
-.enseigne-form-group select,
-.enseigne-form-group textarea {
-    width: 70%; /* Prend le reste de la ligne */
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    padding: 8px;
-}
+    .enseigne-form-group input,
+    .enseigne-form-group select,
+    .enseigne-form-group textarea {
+        width: 70%;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 8px;
+    }
 
-/* Boutons */
 .enseigne-form-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
 }
 
-.enseigne-form-buttons .btn {
-    width: 48%;
+    .enseigne-form-buttons .btn {
+        width: 48%;
+    }
+
+/* Image gâteaux */
+.img-gateau-client {
+    height: 150px;
+    width: auto;
+    object-fit: cover;
+    display: block;
+    margin: auto;
 }
 
+.commande-details {
+    background-color: #fdfdfd;
+    border-left: 4px solid #86b971;
+}
 
+.facture-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    max-width: 900px;
+    margin: auto;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.banner-gateau {
+    height: 350px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.menu-admin-icon {
+    font-size: 1.75rem;
+    padding: 12px 20px;
+}
+
+    .menu-admin-icon i {
+        font-size: 3rem;
+    }
+
+.evenement-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+    .evenement-card:hover {
+        transform: scale(1.03);
+    }
+
+    .evenement-card.active {
+        border: 3px solid #dd33ff;
+        box-shadow: 0 0 15px rgba(147, 51, 255, 0.5);
+    }

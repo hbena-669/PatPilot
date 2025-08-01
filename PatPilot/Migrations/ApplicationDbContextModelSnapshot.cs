@@ -167,6 +167,9 @@ namespace PatPilot.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Adresse")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -229,6 +232,122 @@ namespace PatPilot.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("PatPilot.Models.Client", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Adresse")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("EnseigneId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MotDePasse")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Prenom")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Telephone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnseigneId");
+
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("PatPilot.Models.Commande", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Commentaire")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCommande")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateLivraison")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EnseigneId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Statut")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("EnseigneId");
+
+                    b.ToTable("Commandes");
+                });
+
+            modelBuilder.Entity("PatPilot.Models.CommandeDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CommandeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("GateauId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("PrixUnitaire")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantite")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommandeId");
+
+                    b.HasIndex("GateauId");
+
+                    b.ToTable("CommandeDetails");
+                });
+
             modelBuilder.Entity("PatPilot.Models.Enseigne", b =>
                 {
                     b.Property<Guid>("Id")
@@ -283,11 +402,32 @@ namespace PatPilot.Migrations
                     b.ToTable("Enseigne");
                 });
 
+            modelBuilder.Entity("PatPilot.Models.Evenement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Icone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Evenement");
+                });
+
             modelBuilder.Entity("PatPilot.Models.Gateau", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CommandeDesc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -296,8 +436,20 @@ namespace PatPilot.Migrations
                     b.Property<Guid>("EnseigneId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("EvenementId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("EventID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("GateauxType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageModel")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -311,6 +463,8 @@ namespace PatPilot.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EnseigneId");
+
+                    b.HasIndex("EvenementId");
 
                     b.ToTable("Gateaux");
                 });
@@ -403,6 +557,55 @@ namespace PatPilot.Migrations
                     b.Navigation("Enseigne");
                 });
 
+            modelBuilder.Entity("PatPilot.Models.Client", b =>
+                {
+                    b.HasOne("PatPilot.Models.Enseigne", "Enseigne")
+                        .WithMany()
+                        .HasForeignKey("EnseigneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Enseigne");
+                });
+
+            modelBuilder.Entity("PatPilot.Models.Commande", b =>
+                {
+                    b.HasOne("PatPilot.Models.Client", "Client")
+                        .WithMany("Commandes")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PatPilot.Models.Enseigne", "Enseigne")
+                        .WithMany("Commandes")
+                        .HasForeignKey("EnseigneId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Enseigne");
+                });
+
+            modelBuilder.Entity("PatPilot.Models.CommandeDetail", b =>
+                {
+                    b.HasOne("PatPilot.Models.Commande", "Commande")
+                        .WithMany("commandeDetails")
+                        .HasForeignKey("CommandeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PatPilot.Models.Gateau", "Gateau")
+                        .WithMany()
+                        .HasForeignKey("GateauId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Commande");
+
+                    b.Navigation("Gateau");
+                });
+
             modelBuilder.Entity("PatPilot.Models.Gateau", b =>
                 {
                     b.HasOne("PatPilot.Models.Enseigne", "Enseigne")
@@ -411,7 +614,13 @@ namespace PatPilot.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PatPilot.Models.Evenement", "Evenement")
+                        .WithMany("Gateaux")
+                        .HasForeignKey("EvenementId");
+
                     b.Navigation("Enseigne");
+
+                    b.Navigation("Evenement");
                 });
 
             modelBuilder.Entity("PatPilot.Models.Ingredient", b =>
@@ -425,11 +634,28 @@ namespace PatPilot.Migrations
                     b.Navigation("Gateau");
                 });
 
+            modelBuilder.Entity("PatPilot.Models.Client", b =>
+                {
+                    b.Navigation("Commandes");
+                });
+
+            modelBuilder.Entity("PatPilot.Models.Commande", b =>
+                {
+                    b.Navigation("commandeDetails");
+                });
+
             modelBuilder.Entity("PatPilot.Models.Enseigne", b =>
                 {
+                    b.Navigation("Commandes");
+
                     b.Navigation("Gateaux");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("PatPilot.Models.Evenement", b =>
+                {
+                    b.Navigation("Gateaux");
                 });
 
             modelBuilder.Entity("PatPilot.Models.Gateau", b =>

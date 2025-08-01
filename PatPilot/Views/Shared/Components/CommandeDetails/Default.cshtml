@@ -1,0 +1,68 @@
+﻿@model PatPilot.Models.Commande
+@using PatPilot.Extensions
+<div class="facture-container border rounded shadow-sm p-4 bg-white">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <div>
+            <h4 class="fw-bold text-uppercase mb-1">Confirmation de commande</h4>
+            <small class="text-muted">Référence : <span class="fw-semibold text-dark">@Model.Id.ToString().Substring(0, 8).ToUpper()</span></small>
+        </div>
+        <div class="text-end">
+            <span class="badge bg-secondary">@Model.Statut.ToFriendlyString()</span>
+            <div class="mt-2 text-muted">
+                Commandée le : <strong>@Model.DateCommande.ToString("dd MMM yyyy")</strong><br />
+                Livraison prévue : <strong>@Model.DateLivraison.ToString("dd MMM yyyy")</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client & Total -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h6 class="text-uppercase text-muted">Client</h6>
+            <div class="ps-2 border-start">
+                <p class="mb-1 fw-semibold">@Model.Client.Prenom @Model.Client.Nom</p>
+                <p class="mb-1"><i class="bi bi-envelope"></i> @Model.Client.Email</p>
+                <p class="mb-0"><i class="bi bi-telephone"></i> @Model.Client.Telephone</p>
+            </div>
+        </div>
+        <div class="col-md-6 text-end">
+            <h6 class="text-uppercase text-muted">Montant total</h6>
+            <p class="display-6 fw-bold text-success">@Model.Total.ToString("C")</p>
+        </div>
+    </div>
+
+    <!-- Articles -->
+    <div class="border-top pt-3">
+        <h6 class="text-uppercase text-muted mb-3">Détail de la commande</h6>
+        <table class="table table-borderless align-middle">
+            <thead class="text-uppercase small text-muted border-bottom">
+                <tr>
+                    <th>Produit</th>
+                    <th class="text-center">Qté</th>
+                    <th class="text-end">Prix unitaire</th>
+                    <th class="text-end">Sous-total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.commandeDetails)
+                {
+                    <tr class="border-bottom">
+                        <td>@item.Gateau.Name</td>
+                        <td class="text-center">@item.Quantite</td>
+                        <td class="text-end">@item.PrixUnitaire.ToString("C")</td>
+                        <td class="text-end">@item.SousTotal.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Commentaire))
+    {
+        <div class="mt-4 border-top pt-3">
+            <h6 class="text-uppercase text-muted">Commentaire</h6>
+            <p class="fst-italic">@Model.Commentaire</p>
+        </div>
+    }
+</div>

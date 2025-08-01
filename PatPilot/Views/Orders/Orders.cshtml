@@ -1,0 +1,137 @@
+﻿@using PatPilot.Extensions
+@using PatPilot.Models.DTO
+@model List<Commande>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Gestion des commandes";
+
+    var groupes = Model.GroupBy(c => c.Statut)
+                       .ToDictionary(g => g.Key, g => g.Count());
+}
+
+<script>
+    function applyStatut(statut) {
+        const params = new URLSearchParams(window.location.search);
+        params.set('statut', statut);
+        window.location.href = `?${params.toString()}`;
+    }
+</script>
+
+<h2 class="text-center mb-4">📦 Gestion des Commandes</h2>
+
+<!-- Filtres par statut -->
+<div class="d-flex justify-content-center mb-4 flex-wrap gap-2">
+    @foreach (StatutCommande statut in Enum.GetValues(typeof(StatutCommande)))
+    {
+        var isChecked = statut.Equals(ViewBag.SelectedStatut);
+        var count = groupes.ContainsKey(statut) ? groupes[statut] : 0;
+
+        string iicon = statut switch
+        {
+            StatutCommande.EnAttente => "bi-hourglass-split",
+            StatutCommande.EnPreparation => "bi-truck",
+            StatutCommande.Livree => "bi-check-circle",
+            StatutCommande.Annulee => "bi-x-circle",
+            _ => "bi-question-circle"
+        };
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input d-none" type="radio" name="statut" value="@statut" id="statut_@statut"
+            @(isChecked ? "checked" : "")
+                   onchange="applyStatut('@statut')">
+
+            <label class="btn btn-outline-primary @(isChecked ? "active" : "")" for="statut_@statut">
+                <i class="bi @iicon me-1"></i> @statut.ToFriendlyString()
+                <span class="badge bg-secondary ms-2">@count</span>
+            </label>    
+        </div>
+    }
+</div>
+<!--Filtres-->
+<form method="get" asp-action="Orders" class="row g-2 mb-4">
+    <input type="hidden" name="sortOrder" value="@ViewBag.SortOrder" />
+    <div class="col-md-4">
+        <input type="text" name="searchNom" class="form-control" placeholder="Rechercher par nom client"
+               value="@ViewBag.SearchNom" />
+    </div>
+    <div class="col-md-3">
+        <input type="date" name="dateDebut" class="form-control" value="@ViewBag.DateDebut" />
+    </div>
+    <div class="col-md-3">
+        <input type="date" name="dateFin" class="form-control" value="@ViewBag.DateFin" />
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-dark w-100">
+            <i class="bi bi-funnel-fill me-1"></i> Filtrer
+        </button>
+    </div>
+</form>
+
+<div class="text-end mb-3">
+    @{
+        string newSort = ViewBag.SortOrder == "asc" ? "desc" : "asc";
+        string icon = ViewBag.SortOrder == "asc" ? "bi bi-arrow-down" : "bi bi-arrow-up";
+    }
+    <a class="btn btn-outline-dark" href="@Url.Action("Orders", new {
+        statut = ViewBag.SelectedStatut,
+        searchNom = ViewBag.SearchNom,
+        dateDebut = ViewBag.DateDebut,
+        dateFin = ViewBag.DateFin,
+        sortOrder = newSort
+    })">
+        <i class="@icon"></i> Trier par date
+    </a>
+</div>
+<!-- Liste des commandes -->
+<div class="container">
+    @foreach (var commande in Model)
+    {
+        string badgeClass = commande.Statut switch
+        {
+            StatutCommande.EnAttente => "bg-warning text-dark",
+            StatutCommande.EnPreparation => "bg-info text-white",
+            StatutCommande.Livree => "bg-success text-white",
+            StatutCommande.Annulee => "bg-danger text-white",
+            _ => "bg-secondary text-white"
+        };
+
+        string iicon = commande.Statut switch
+        {
+            StatutCommande.EnAttente => "bi-hourglass-split",
+            StatutCommande.EnPreparation => "bi-truck",
+            StatutCommande.Livree => "bi-check-circle",
+            StatutCommande.Annulee => "bi-x-circle",
+            _ => "bi-question-circle"
+        };
+
+        <div class="card shadow-sm mb-4 animate__animated animate__fadeIn"
+             onclick="window.location.href='@Url.Action("Details", "Orders", new { id = commande.Id })'"
+             style="cursor:pointer;">
+            <div class="card-body">
+                <!-- Ligne du haut : statut + date -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge @badgeClass px-3 py-2">
+                        <i class="bi @iicon me-1"></i> @commande.Statut.ToFriendlyString()
+                    </span>
+                    <small class="text-muted"><i class="bi bi-calendar me-1"></i>@commande.DateCommande.ToShortDateString()</small>
+                </div>
+
+                <div class="row">
+                    <!-- Infos Client -->
+                    <div class="col-md-8">
+                        <p class="mb-1"><i class="bi bi-person-fill me-1 text-primary"></i><strong>Client :</strong> @commande.Client.Prenom @commande.Client.Nom</p>
+                        <p class="mb-1"><i class="bi bi-house-door-fill me-1 text-success"></i><strong>Adresse :</strong> @commande.Client.Adresse</p>
+                        <p class="mb-1"><i class="bi bi-telephone-fill me-1 text-info"></i><strong>Tél :</strong> @commande.Client.Telephone</p>
+                        <p class="mb-1"><i class="bi bi-envelope-fill me-1 text-warning"></i><strong>Email :</strong> @commande.Client.Email</p>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="col-md-4 text-end d-flex flex-column justify-content-center">
+                        <h3 class="text-primary fw-bold mb-0"><i class="bi bi-currency-euro me-1"></i>@commande.Total €</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

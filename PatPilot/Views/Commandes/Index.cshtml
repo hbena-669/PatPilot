@@ -1,0 +1,135 @@
+﻿@model PatPilot.ViewModels.CommandeVM
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    ViewData["Title"] = "Commander des Gâteaux";
+    ViewData["CommandeVM"] = Model;
+}
+
+<style>
+    .pastel-tabs .nav-link {
+        font-size: 2rem;
+        padding: 20px 40px;
+        border-radius: 30px 30px 0 0;
+        font-weight: 600;
+        margin: 0 10px;
+        border: none;
+        color: #555;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
+
+        .pastel-tabs .nav-link.active {
+            background-color: #b9fbc0; /* menthe douce */
+            color: #9333ff;
+            font-weight: bold;
+            border: none;
+        }
+
+            .pastel-tabs .nav-link.active::after {
+                content: "";
+                position: absolute;
+                bottom: -6px;
+                left: 25%;
+                width: 50%;
+                height: 4px;
+                background-color: #9333ff;
+                border-radius: 2px;
+            }
+
+    .pastel-tab-button:hover {
+        background-color: #ffe3ec; /* rose pastel */
+        color: #c2185b;
+    }
+
+    .pastel-tabs {
+        border-bottom: none !important;
+    }
+
+</style>
+
+
+<div class="container mt-4">
+    <!-- Bannière animée -->
+    <div class="banner-gateau position-relative text-white text-center mb-5">
+        <img src="~/img/patisserie-banner.jpg" class="w-100 banner-img" alt="Pâtisserie" />
+        <div class="banner-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+            <h1 class="display-4 fw-bold animate__animated animate__fadeInDown">Bienvenue chez votre Pâtissier !</h1>
+            <p class="lead animate__animated animate__fadeInUp">Des douceurs sur-mesure, pour toutes les occasions 🎉</p>
+        </div>
+    </div>
+
+
+    <!-- Onglets -->
+    <ul class="nav nav-tabs justify-content-start mb-4 pastel-tabs" id="gateauTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active pastel-tab-button" id="normal-tab" data-bs-toggle="tab" data-bs-target="#normal" type="button" role="tab">
+                🎂 Gâteaux
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link pastel-tab-button" id="special-tab" data-bs-toggle="tab" data-bs-target="#special" type="button" role="tab">
+                🍥 Commande Spéciale
+            </button>
+        </li>
+    </ul>
+
+
+    <div class="tab-content mt-3" id="gateauTabsContent">
+        <!-- Gâteaux Normaux -->
+        <div class="tab-pane fade show active justify-content-start" id="normal" role="tabpanel">
+            <div class="row justify-content-start">
+                @foreach (var gateau in Model.gateaux)
+                {
+                    @Html.Partial("_GateauCard", gateau)
+                }
+            </div>
+        </div>
+
+        <!-- Gâteaux Spéciaux -->
+        <div class="tab-pane fade" id="special" role="tabpanel">
+            <h3 class="mb-4">🎈 Choisissez un événement :</h3>
+            <div class="row" id="evenementList">
+                @foreach (var evt in Model.evenements)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card evenement-card h-100 text-center p-3"
+                             onclick="selectEvenement(this, '@evt.Id')"
+                             data-id="@evt.Id">
+                            <i class="@evt.Icone fs-1 text-primary mb-3"></i> <!-- icône ici -->
+                            <div class="card-body">
+                                <h5 class="card-title">@evt.Nom</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <h4 class="mt-5">🍰 Modèles de Gâteaux pour cet Évènement :</h4>
+            <div class="row" id="gateauxSpeciauxContainer">
+                <p class="text-muted">Veuillez sélectionner un évènement pour voir les gâteaux disponibles.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function selectEvenement(card, eventId) {
+            // Supprime la classe active de tous
+            document.querySelectorAll('.evenement-card').forEach(el => el.classList.remove('active'));
+
+            // Ajoute la classe active à la carte cliquée
+            card.classList.add('active');
+
+            // Appelle le chargement AJAX
+            const enseigneId = '@Model.enseigne.Id';
+            fetch(`/Commandes/GetGateauxByEvenement/${eventId}?enseigneId=${enseigneId}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("gateauxSpeciauxContainer").innerHTML = html;
+                });
+        }
+    </script>
+}

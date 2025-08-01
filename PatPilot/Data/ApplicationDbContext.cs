@@ -31,11 +31,38 @@ namespace PatPilot.Data
                 .HasForeignKey(i => i.GateauId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ApplicationUser>()
-               .HasOne(u => u.Enseigne) // Navigation property
-               .WithMany(e => e.Users)  // Reverse navigation property
-               .HasForeignKey(u => u.EnseigneId) // Foreign key
-               .OnDelete(DeleteBehavior.Cascade); // Configure cascading behavior
+                modelBuilder.Entity<Commande>()
+               .HasOne(c => c.Client)
+               .WithMany(cl => cl.Commandes)
+               .HasForeignKey(c => c.ClientId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // Relation entre Commande et Enseigne
+            modelBuilder.Entity<Commande>()
+                    .HasOne(c => c.Enseigne)
+                    .WithMany(e => e.Commandes)
+                    .HasForeignKey(c => c.EnseigneId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+            // Relation entre CommandeDetail et Commande
+            modelBuilder.Entity<CommandeDetail>()
+                    .HasOne(cd => cd.Commande)
+                    .WithMany(c => c.commandeDetails)
+                    .HasForeignKey(cd => cd.CommandeId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Relation entre CommandeDetail et Gateau
+                modelBuilder.Entity<CommandeDetail>()
+                    .HasOne(cd => cd.Gateau)
+                    .WithMany()
+                    .HasForeignKey(cd => cd.GateauId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                modelBuilder.Entity<ApplicationUser>()
+                   .HasOne(u => u.Enseigne) // Navigation property
+                   .WithMany(e => e.Users)  // Reverse navigation property
+                   .HasForeignKey(u => u.EnseigneId) // Foreign key
+                   .OnDelete(DeleteBehavior.Cascade); // Configure cascading behavior
         }
 
         /// <summary>
@@ -49,7 +76,7 @@ namespace PatPilot.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             // Définir les rôles
-            string[] roles = { "Admin", "AdminEnseigne" };
+            string[] roles = { "Admin", "AdminEnseigne" , "Customer"};
 
             // Création des rôles
             foreach (var role in roles)
@@ -90,6 +117,12 @@ namespace PatPilot.Data
         /// <returns></returns>
         public DbSet<PatPilot.Models.Enseigne>? Enseigne { get; set; }
         public DbSet<Gateau> Gateaux { get; set; }
+
+        public DbSet<Commande> Commandes { get; set; }
+        public DbSet<CommandeDetail> CommandeDetails { get; set; }
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<Evenement> Evenement { get; set; }
 
     }
 }

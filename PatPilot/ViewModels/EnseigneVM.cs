@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace PatPilot.ViewModels
 {
-    public class EnseigneWM
+    public class EnseigneVM
     {
         [ScaffoldColumn(false)]
         public Guid Id { get; set; } = Guid.NewGuid(); // Identifiant unique

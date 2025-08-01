@@ -10,4 +10,10 @@
         Livree,     // Commande livrée
         Annulee     // Commande annulée
     }
+
+    public enum GateauxType
+    {
+        Normal,
+        Special
+    }
 }

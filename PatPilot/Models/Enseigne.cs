@@ -53,5 +53,6 @@ namespace PatPilot.Models
         // Relation avec les gâteaux
         public ICollection<Gateau> Gateaux { get; set; }
         public ICollection<ApplicationUser> Users { get; set; }
+        public List<Commande> Commandes { get; set; } = new List<Commande>();
     }
 }

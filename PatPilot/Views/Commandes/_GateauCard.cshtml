@@ -1,0 +1,44 @@
+﻿@model PatPilot.Models.Gateau
+@{
+    var commandeVM = ViewData["CommandeVM"] as PatPilot.ViewModels.CommandeVM;
+    var itemDansPanier = commandeVM?.details?.FirstOrDefault(p => p.GateauId == Model.Id);
+    var estDansPanier = itemDansPanier != null;
+    var quantite = estDansPanier ? itemDansPanier.Quantite : 1;
+}
+
+<div class="col-md-4 mb-4 d-flex justify-content-center position-relative">
+    <div class="card-hover">
+        <img src="@Url.Content("~/" + Model.Image)" alt="Image de mon Gateau" />
+
+        @if (estDansPanier)
+        {
+            <div class="badge-panier">
+                <i class="bi bi-cart-check-fill"></i> Dans le panier
+            </div>
+        }
+
+        <div class="card-hover__content">
+            <div class="price-circle">
+                @Model.Price.ToString("0.00") €
+            </div>
+
+            <h3 class="card-hover__title">@Model.Name</h3>
+
+            <p class="card-hover__text">@Model.Description</p>
+
+            <form asp-controller="Commandes" asp-action="AjouterAuPanier" method="post">
+                <input type="hidden" name="gateauId" value="@Model.Id" />
+                <input type="hidden" name="enseigneId" value="@Model.EnseigneId" />
+                <div class="d-flex align-items-center justify-content-center">
+                    <input type="number" name="quantite" value="@quantite" min="1" class="form-control w-50 me-2" />
+                    <button type="submit" class="card-hover__link">🛒 Ajouter</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-hover__extra">
+            <span>Bon appétit !</span>
+        </div>
+    </div>
+</div>
+
